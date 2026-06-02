@@ -1,0 +1,293 @@
+# Pfitzinger Half Marathon - 12 weeks, 47-63 km/week peak
+# From "Faster Road Racing" by Pete Pfitzinger
+# Target: Intermediate runners, 47-63 km peak mileage
+
+meta:
+  name: "Pfitzinger Half Marathon 47-63km"
+  distance: half-marathon
+  weeks: 12
+  peak_km: 63
+  description: "Pfitzinger 12-week half marathon plan for intermediate runners (47-63 km/week peak)"
+  level: intermediate
+
+paces:
+  easy: "5:30-6:00"
+  general_aerobic: "5:00-5:30"
+  lt: "4:15-4:35"
+  vo2max: "3:50-4:10"
+  strides: "3:15-3:40"
+  recovery: "5:45-6:15"
+
+workouts:
+  # === ENDURANCE RUNS ===
+  Endurance 13k:
+    - warmup: 1000m z2
+    - run: 11000m z2
+    - cooldown: 1000m z2
+  Endurance 14k:
+    - warmup: 1000m z2
+    - run: 12000m z2
+    - cooldown: 1000m z2
+  Endurance 16k:
+    - warmup: 1000m z2
+    - run: 14000m z2
+    - cooldown: 1000m z2
+  Endurance 18k:
+    - warmup: 1000m z2
+    - run: 16000m z2
+    - cooldown: 1000m z2
+  Endurance 19k:
+    - warmup: 1000m z2
+    - run: 17000m z2
+    - cooldown: 1000m z2
+  Endurance 21k:
+    - warmup: 1000m z2
+    - run: 19000m z2
+    - cooldown: 1000m z2
+  Endurance 23k:
+    - warmup: 1000m z2
+    - run: 21000m z2
+    - cooldown: 1000m z2
+
+  # === GENERAL AEROBIC ===
+  GA 10k:
+    - warmup: 1000m z2
+    - run: 8000m z3
+    - cooldown: 1000m z2
+  GA 11k:
+    - warmup: 1000m z2
+    - run: 9000m z3
+    - cooldown: 1000m z2
+  GA 13k:
+    - warmup: 1000m z2
+    - run: 11000m z3
+    - cooldown: 1000m z2
+  GA 14k:
+    - warmup: 1000m z2
+    - run: 12000m z3
+    - cooldown: 1000m z2
+
+  # === GA + SPEED ===
+  GA+Speed 10k:
+    - warmup: 2000m z2
+    - run: 4000m z3
+    - repeat(8):
+      - run: 100m $strides
+      - recovery: 200m z1
+    - cooldown: 1000m z2
+  GA+Speed 11k:
+    - warmup: 2000m z2
+    - run: 4000m z3
+    - repeat(6):
+      - run: 12s $strides
+      - recovery: 60s z1
+    - repeat(6):
+      - run: 100m $strides
+      - recovery: 200m z1
+    - cooldown: 1000m z2
+  GA+Speed 13k:
+    - warmup: 2000m z2
+    - run: 6000m z3
+    - repeat(6):
+      - run: 12s $strides
+      - recovery: 60s z1
+    - repeat(6):
+      - run: 100m $strides
+      - recovery: 200m z1
+    - cooldown: 1000m z2
+
+  # === LACTATE THRESHOLD ===
+  LT 11k:
+    - warmup: 2000m z2
+    - run: 14min $lt
+    - recovery: 4min z2
+    - run: 12min $lt
+    - cooldown: 2000m z2
+  LT 13k 18+12:
+    - warmup: 2000m z2
+    - run: 18min $lt
+    - recovery: 4min z2
+    - run: 12min $lt
+    - cooldown: 2000m z2
+  LT 13k 20+16:
+    - warmup: 2000m z2
+    - run: 20min $lt
+    - recovery: 4min z2
+    - run: 16min $lt
+    - cooldown: 2000m z2
+  LT 14k Tempo:
+    - warmup: 2000m z2
+    - run: 38min $lt
+    - cooldown: 2000m z2
+
+  # === VO2MAX ===
+  VO2max 6x1000:
+    - warmup: 2000m z2
+    - repeat(6):
+      - run: 1000m $vo2max
+      - recovery: 3min z2
+    - cooldown: 2000m z2
+  VO2max 2x(2x1200+800):
+    - warmup: 2000m z2
+    - repeat(2):
+      - run: 1200m $vo2max
+      - recovery: 3min z2
+      - run: 1200m $vo2max
+      - recovery: 3min z2
+      - run: 800m $vo2max
+      - recovery: 4min z2
+    - cooldown: 2000m z2
+  VO2max 2x1200+2x1000+800:
+    - warmup: 2000m z2
+    - run: 1200m $vo2max
+    - recovery: 3min z2
+    - run: 1200m $vo2max
+    - recovery: 3min z2
+    - run: 1000m $vo2max
+    - recovery: 3min z2
+    - run: 1000m $vo2max
+    - recovery: 3min z2
+    - run: 800m $vo2max
+    - cooldown: 2000m z2
+
+  # === PROGRESSION LONG RUNS ===
+  Progression 19k:
+    - warmup: 1000m z2
+    - run: 12000m z2
+    - run: 3000m z3
+    - run: 3000m $lt
+  Progression 21k:
+    - warmup: 1000m z2
+    - run: 12000m z2
+    - run: 3000m z3
+    - run: 5000m $lt
+
+  # === RECOVERY ===
+  Recovery 5k:
+    - warmup: lap z1
+    - run: 5000m $recovery
+    - cooldown: lap z1
+  Recovery 6k:
+    - warmup: lap z1
+    - run: 6000m $recovery
+    - cooldown: lap z1
+  Recovery 8k:
+    - warmup: lap z1
+    - run: 8000m $recovery
+    - cooldown: lap z1
+
+  # === TUNE-UP RACE ===
+  Tune-Up Race 8-10k:
+    - warmup: 3000m z2
+    - run: 10000m $lt
+    - cooldown: 3000m z2
+
+  # === RACE WEEK ===
+  Race Pace 11k:
+    - warmup: 2000m z2
+    - run: 3000m $lt
+    - recovery: 2min z2
+    - repeat(4):
+      - run: 100m $strides
+      - recovery: 200m z1
+    - cooldown: 2000m z2
+
+# Schedule: weeks before race (week 12 = first week, week 1 = race week)
+# Each week starts Monday
+schedule_template:
+  week_12:
+    - rest
+    - GA+Speed 10k
+    - Endurance 13k
+    - rest
+    - LT 11k
+    - rest
+    - Endurance 16k
+  week_11:
+    - rest
+    - GA+Speed 11k
+    - Endurance 13k
+    - rest
+    - LT 13k 18+12
+    - rest
+    - Endurance 18k
+  week_10:
+    - rest
+    - GA+Speed 13k
+    - Endurance 14k
+    - rest
+    - LT 13k 18+12
+    - rest
+    - Progression 19k
+  week_9:
+    - rest
+    - GA+Speed 13k
+    - GA 11k
+    - rest
+    - GA 13k
+    - rest
+    - GA 14k
+  week_8:
+    - rest
+    - LT 13k 20+16
+    - Endurance 14k
+    - rest
+    - GA+Speed 11k
+    - Recovery 6k
+    - Progression 19k
+  week_7:
+    - rest
+    - GA+Speed 13k
+    - Endurance 14k
+    - rest
+    - VO2max 6x1000
+    - Recovery 8k
+    - Endurance 19k
+  week_6:
+    - rest
+    - LT 14k Tempo
+    - Endurance 16k
+    - rest
+    - GA+Speed 13k
+    - Recovery 8k
+    - Progression 21k
+  week_5:
+    - rest
+    - GA+Speed 13k
+    - GA 11k
+    - rest
+    - Recovery 5k
+    - Tune-Up Race 8-10k
+    - Endurance 16k
+  week_4:
+    - rest
+    - GA 13k
+    - Endurance 18k
+    - rest
+    - VO2max 2x(2x1200+800)
+    - Recovery 6k
+    - Endurance 23k
+  week_3:
+    - rest
+    - GA+Speed 13k
+    - GA 11k
+    - rest
+    - Recovery 5k
+    - Tune-Up Race 8-10k
+    - Endurance 16k
+  week_2:
+    - rest
+    - GA+Speed 10k
+    - Recovery 6k
+    - rest
+    - VO2max 2x1200+2x1000+800
+    - Recovery 5k
+    - Endurance 16k
+  week_1:
+    - rest
+    - Race Pace 11k
+    - Recovery 8k
+    - Recovery 6k
+    - rest
+    - Recovery 5k
+    - rest

@@ -84,7 +84,35 @@ Create a `session.json` file in your working directory:
 
 ## Usage
 
-### Validate a Plan
+### Quick Start with Preset Plans
+
+The fastest way to get started — use a built-in training plan and just specify your race date:
+
+```bash
+# See available plans
+uv run garmin-training-builder presets
+
+# Validate a plan (see what dates it would schedule)
+uv run garmin-training-builder validate pfitz-half-12-47 --race-date 2026-09-13
+
+# Import to Garmin Connect
+uv run garmin-training-builder import pfitz-half-12-47 --race-date 2026-09-13
+```
+
+The tool calculates all training dates backwards from your race date and schedules everything automatically.
+
+#### Available Presets
+
+| Preset | Distance | Weeks | Level |
+|--------|----------|-------|-------|
+| `pfitz-half-12-47` | Half Marathon | 12 | Intermediate |
+| `higdon-half-novice1` | Half Marathon | 12 | Beginner |
+| `hansons-half-beginner` | Half Marathon | 18 | Beginner-Intermediate |
+| `higdon-marathon-novice1` | Marathon | 18 | Beginner |
+
+### Custom Plans
+
+#### Validate a Plan
 
 Check your YAML is correct without uploading anything:
 
@@ -92,7 +120,7 @@ Check your YAML is correct without uploading anything:
 uv run garmin-training-builder validate examples/5k_plan.yaml
 ```
 
-### Import a Plan
+#### Import a Plan
 
 Upload workouts and schedule them:
 
@@ -258,6 +286,36 @@ schedule:
     - Long Run 16k
 ```
 
+## Customizing Preset Paces
+
+Preset plans come with default pace targets. To customize them for your fitness level, copy the preset and edit the `paces` section:
+
+```bash
+cp $(uv run python -c "from garmin_training_builder.presets import get_preset_path; print(get_preset_path('pfitz-half-12-47'))") my_plan.yaml
+```
+
+Then edit `my_plan.yaml` and change the paces:
+
+```yaml
+paces:
+  easy: "5:00-5:30"       # adjust to your easy pace
+  lt: "4:00-4:15"         # adjust to your threshold pace
+  vo2max: "3:35-3:55"     # adjust to your VO2max pace
+  ...
+```
+
+And add a fixed schedule instead of using `--race-date`:
+
+```yaml
+# Replace schedule_template with:
+schedule:
+  start: "2026-06-23"
+  days:
+    - rest
+    - GA+Speed 10k
+    # ... etc
+```
+
 ## Troubleshooting
 
 ### "Your session may have expired"
@@ -287,10 +345,12 @@ As of mid-2025, Garmin added Cloudflare TLS fingerprinting to `connect.garmin.co
 ## Contributing
 
 PRs welcome. Some ideas:
+- More preset plans (Pfitzinger marathon, Daniels, 80/20, etc.)
 - Cycling workout support (power targets)
 - Import from spreadsheet formats
 - Support for swimming workouts
 - Auto-refresh session via browser automation (Playwright)
+- Pace calculator based on recent race time
 
 ## License
 

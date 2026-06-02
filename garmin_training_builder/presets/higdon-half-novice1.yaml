@@ -1,0 +1,159 @@
+# Hal Higdon Half Marathon - Novice 1
+# 12-week plan for first-time half marathoners
+# Simple structure: easy runs + one long run per week
+
+meta:
+  name: "Hal Higdon Half Marathon Novice 1"
+  distance: half-marathon
+  weeks: 12
+  peak_km: 40
+  description: "Hal Higdon's beginner-friendly 12-week half marathon plan. 3 runs + 1 long run per week."
+  level: beginner
+
+paces:
+  easy: "6:00-6:45"
+  recovery: "6:30-7:00"
+
+workouts:
+  Easy 5k:
+    - warmup: lap z2
+    - run: 5000m z2
+    - cooldown: lap z1
+  Easy 6k:
+    - warmup: lap z2
+    - run: 6000m z2
+    - cooldown: lap z1
+  Easy 8k:
+    - warmup: lap z2
+    - run: 8000m z2
+    - cooldown: lap z1
+  Long Run 8k:
+    - warmup: 1000m z2
+    - run: 6000m z2
+    - cooldown: 1000m z1
+  Long Run 10k:
+    - warmup: 1000m z2
+    - run: 8000m z2
+    - cooldown: 1000m z1
+  Long Run 11k:
+    - warmup: 1000m z2
+    - run: 9000m z2
+    - cooldown: 1000m z1
+  Long Run 13k:
+    - warmup: 1000m z2
+    - run: 11000m z2
+    - cooldown: 1000m z1
+  Long Run 14k:
+    - warmup: 1000m z2
+    - run: 12000m z2
+    - cooldown: 1000m z1
+  Long Run 16k:
+    - warmup: 1000m z2
+    - run: 14000m z2
+    - cooldown: 1000m z1
+  Long Run 18k:
+    - warmup: 1000m z2
+    - run: 16000m z2
+    - cooldown: 1000m z1
+  Long Run 19k:
+    - warmup: 1000m z2
+    - run: 17000m z2
+    - cooldown: 1000m z1
+
+schedule_template:
+  week_12:
+    - rest
+    - Easy 5k
+    - Easy 5k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 8k
+  week_11:
+    - rest
+    - Easy 5k
+    - Easy 5k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 10k
+  week_10:
+    - rest
+    - Easy 5k
+    - Easy 6k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 11k
+  week_9:
+    - rest
+    - Easy 5k
+    - Easy 6k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 13k
+  week_8:
+    - rest
+    - Easy 6k
+    - Easy 6k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 14k
+  week_7:
+    - rest
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 10k
+  week_6:
+    - rest
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Easy 6k
+    - rest
+    - Long Run 16k
+  week_5:
+    - rest
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Easy 6k
+    - rest
+    - Long Run 18k
+  week_4:
+    - rest
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Easy 6k
+    - rest
+    - Long Run 13k
+  week_3:
+    - rest
+    - Easy 8k
+    - Easy 8k
+    - rest
+    - Easy 6k
+    - rest
+    - Long Run 19k
+  week_2:
+    - rest
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 13k
+  week_1:
+    - rest
+    - Easy 5k
+    - Easy 5k
+    - rest
+    - Easy 5k
+    - rest
+    - rest

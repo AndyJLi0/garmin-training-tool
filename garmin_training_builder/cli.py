@@ -1,12 +1,14 @@
 """Command-line interface for Garmin Training Builder."""
 
 import argparse
+import datetime
 import json
 import os
 import sys
 
 from .client import GarminClient
 from .plan_parser import parse_plan
+from .presets import list_presets, get_preset_path
 
 
 def load_session(session_path=None):
@@ -35,6 +37,21 @@ def load_session(session_path=None):
     return session
 
 
+def _resolve_plan_path(plan_arg):
+    """Resolve a plan argument to a file path (could be a preset name or file path)."""
+    if os.path.exists(plan_arg):
+        return plan_arg
+    try:
+        return get_preset_path(plan_arg)
+    except ValueError:
+        pass
+    print(f"Error: '{plan_arg}' is not a file path or a known preset.")
+    print(f"\nAvailable presets:")
+    for name in list_presets():
+        print(f"  - {name}")
+    sys.exit(1)
+
+
 def cmd_import(args):
     """Import workouts and schedule from a YAML plan."""
     session = load_session(args.session)
@@ -44,8 +61,15 @@ def cmd_import(args):
         extra_cookies=session.get("extra_cookies"),
     )
 
-    print(f"Parsing plan: {args.plan}")
-    workouts, schedule = parse_plan(args.plan)
+    plan_path = _resolve_plan_path(args.plan)
+    race_date = None
+    if args.race_date:
+        race_date = datetime.date.fromisoformat(args.race_date)
+
+    print(f"Parsing plan: {plan_path}")
+    if race_date:
+        print(f"Race date: {race_date}")
+    workouts, schedule = parse_plan(plan_path, race_date=race_date)
     print(f"Found {len(workouts)} workouts, {len(schedule)} scheduled days")
 
     # Create workouts
@@ -113,7 +137,12 @@ def cmd_list(args):
 def cmd_validate(args):
     """Validate a YAML plan without uploading."""
     try:
-        workouts, schedule = parse_plan(args.plan)
+        plan_path = _resolve_plan_path(args.plan)
+        race_date = None
+        if args.race_date:
+            race_date = datetime.date.fromisoformat(args.race_date)
+
+        workouts, schedule = parse_plan(plan_path, race_date=race_date)
         print(f"Plan is valid!")
         print(f"  Workouts: {len(workouts)}")
         print(f"  Scheduled days: {len(schedule)}")
@@ -126,6 +155,36 @@ def cmd_validate(args):
     except Exception as e:
         print(f"Validation failed: {e}")
         sys.exit(1)
+
+
+def cmd_presets(args):
+    """List available preset training plans."""
+    import yaml
+    presets = list_presets()
+    if not presets:
+        print("No presets available.")
+        return
+
+    print("Available preset training plans:\n")
+    for name in presets:
+        path = get_preset_path(name)
+        with open(path) as f:
+            plan = yaml.safe_load(f)
+        meta = plan.get("meta", {})
+        desc = meta.get("description", "")
+        level = meta.get("level", "")
+        weeks = meta.get("weeks", "?")
+        distance = meta.get("distance", "")
+        print(f"  {name}")
+        print(f"    {desc}")
+        print(f"    Distance: {distance} | Weeks: {weeks} | Level: {level}")
+        print()
+
+    print("Usage:")
+    print("  garmin-training-builder import <preset-name> --race-date YYYY-MM-DD")
+    print()
+    print("Example:")
+    print("  garmin-training-builder import pfitz-half-12-47 --race-date 2026-09-13")
 
 
 def cmd_setup(args):
@@ -199,14 +258,20 @@ def main():
 
     # import command
     p_import = subparsers.add_parser("import", help="Import a training plan to Garmin Connect")
-    p_import.add_argument("plan", help="Path to YAML training plan file")
+    p_import.add_argument("plan", help="Path to YAML plan file, or a preset name (see 'presets' command)")
+    p_import.add_argument("--race-date", "-r", help="Race date (YYYY-MM-DD). Required for preset plans.")
     p_import.add_argument("--no-schedule", action="store_true", help="Create workouts but don't schedule them")
     p_import.set_defaults(func=cmd_import)
 
     # validate command
     p_validate = subparsers.add_parser("validate", help="Validate a YAML plan without uploading")
-    p_validate.add_argument("plan", help="Path to YAML training plan file")
+    p_validate.add_argument("plan", help="Path to YAML plan file, or a preset name")
+    p_validate.add_argument("--race-date", "-r", help="Race date (YYYY-MM-DD). Required for preset plans.")
     p_validate.set_defaults(func=cmd_validate)
+
+    # presets command
+    p_presets = subparsers.add_parser("presets", help="List available preset training plans")
+    p_presets.set_defaults(func=cmd_presets)
 
     # list command
     p_list = subparsers.add_parser("list", help="List workouts on your Garmin Connect account")

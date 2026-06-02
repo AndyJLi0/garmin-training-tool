@@ -1,0 +1,278 @@
+# Hansons Half Marathon - Beginner
+# 18-week plan based on Hansons Marathon Method adapted for half
+# Cumulative fatigue approach: higher frequency, moderate long runs
+
+meta:
+  name: "Hansons Half Marathon Beginner"
+  distance: half-marathon
+  weeks: 18
+  peak_km: 60
+  description: "Hansons method for half marathon. 6 days/week, cumulative fatigue, capped long run at 16km."
+  level: beginner-intermediate
+
+paces:
+  easy: "5:45-6:15"
+  tempo: "4:40-5:00"
+  strength: "4:20-4:40"
+  speed: "4:00-4:20"
+  recovery: "6:00-6:30"
+
+workouts:
+  Easy 6k:
+    - warmup: lap z2
+    - run: 6000m z2
+    - cooldown: lap z1
+  Easy 8k:
+    - warmup: lap z2
+    - run: 8000m z2
+    - cooldown: lap z1
+  Easy 10k:
+    - warmup: 1000m z2
+    - run: 8000m z2
+    - cooldown: 1000m z1
+  Easy 11k:
+    - warmup: 1000m z2
+    - run: 9000m z2
+    - cooldown: 1000m z1
+
+  # Speed workouts (shorter, faster intervals)
+  Speed 12x400:
+    - warmup: 2000m z2
+    - repeat(12):
+      - run: 400m $speed
+      - recovery: 400m z1
+    - cooldown: 2000m z2
+  Speed 8x600:
+    - warmup: 2000m z2
+    - repeat(8):
+      - run: 600m $speed
+      - recovery: 400m z1
+    - cooldown: 2000m z2
+  Speed 6x800:
+    - warmup: 2000m z2
+    - repeat(6):
+      - run: 800m $speed
+      - recovery: 400m z1
+    - cooldown: 2000m z2
+  Speed 5x1000:
+    - warmup: 2000m z2
+    - repeat(5):
+      - run: 1000m $speed
+      - recovery: 400m z1
+    - cooldown: 2000m z2
+  Speed 4x1200:
+    - warmup: 2000m z2
+    - repeat(4):
+      - run: 1200m $speed
+      - recovery: 400m z1
+    - cooldown: 2000m z2
+  Speed 3x1600:
+    - warmup: 2000m z2
+    - repeat(3):
+      - run: 1600m $speed
+      - recovery: 400m z1
+    - cooldown: 2000m z2
+
+  # Strength/Tempo workouts (longer intervals at tempo)
+  Tempo 5k:
+    - warmup: 2000m z2
+    - run: 5000m $tempo
+    - cooldown: 2000m z2
+  Tempo 6k:
+    - warmup: 2000m z2
+    - run: 6000m $tempo
+    - cooldown: 2000m z2
+  Tempo 8k:
+    - warmup: 2000m z2
+    - run: 8000m $tempo
+    - cooldown: 2000m z2
+  Tempo 10k:
+    - warmup: 2000m z2
+    - run: 10000m $tempo
+    - cooldown: 2000m z2
+  Strength 6x1k:
+    - warmup: 2000m z2
+    - repeat(6):
+      - run: 1000m $strength
+      - recovery: 400m z1
+    - cooldown: 2000m z2
+  Strength 4x1600:
+    - warmup: 2000m z2
+    - repeat(4):
+      - run: 1600m $strength
+      - recovery: 600m z1
+    - cooldown: 2000m z2
+  Strength 3x2k:
+    - warmup: 2000m z2
+    - repeat(3):
+      - run: 2000m $strength
+      - recovery: 600m z1
+    - cooldown: 2000m z2
+
+  # Long runs (capped at 16k per Hansons philosophy)
+  Long Run 10k:
+    - warmup: 1000m z2
+    - run: 8000m z2
+    - cooldown: 1000m z1
+  Long Run 11k:
+    - warmup: 1000m z2
+    - run: 9000m z2
+    - cooldown: 1000m z1
+  Long Run 13k:
+    - warmup: 1000m z2
+    - run: 11000m z2
+    - cooldown: 1000m z1
+  Long Run 14k:
+    - warmup: 1000m z2
+    - run: 12000m z2
+    - cooldown: 1000m z1
+  Long Run 16k:
+    - warmup: 1000m z2
+    - run: 14000m z2
+    - cooldown: 1000m z1
+
+schedule_template:
+  week_18:
+    - rest
+    - Easy 6k
+    - Easy 6k
+    - Easy 6k
+    - Easy 6k
+    - rest
+    - Long Run 10k
+  week_17:
+    - rest
+    - Easy 6k
+    - Easy 8k
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Long Run 11k
+  week_16:
+    - rest
+    - Easy 8k
+    - Easy 8k
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Long Run 13k
+  week_15:
+    - rest
+    - Easy 8k
+    - Easy 8k
+    - Easy 8k
+    - Easy 8k
+    - rest
+    - Long Run 13k
+  week_14:
+    - rest
+    - Easy 8k
+    - Speed 12x400
+    - Easy 8k
+    - Easy 8k
+    - rest
+    - Long Run 14k
+  week_13:
+    - rest
+    - Easy 8k
+    - Speed 8x600
+    - Easy 8k
+    - Tempo 5k
+    - rest
+    - Long Run 14k
+  week_12:
+    - rest
+    - Easy 8k
+    - Speed 6x800
+    - Easy 8k
+    - Tempo 5k
+    - rest
+    - Long Run 16k
+  week_11:
+    - rest
+    - Easy 8k
+    - Speed 5x1000
+    - Easy 8k
+    - Tempo 6k
+    - rest
+    - Long Run 14k
+  week_10:
+    - rest
+    - Easy 10k
+    - Speed 4x1200
+    - Easy 8k
+    - Tempo 6k
+    - rest
+    - Long Run 16k
+  week_9:
+    - rest
+    - Easy 10k
+    - Speed 3x1600
+    - Easy 8k
+    - Tempo 8k
+    - rest
+    - Long Run 16k
+  week_8:
+    - rest
+    - Easy 10k
+    - Speed 5x1000
+    - Easy 8k
+    - Tempo 8k
+    - rest
+    - Long Run 16k
+  week_7:
+    - rest
+    - Easy 10k
+    - Speed 4x1200
+    - Easy 8k
+    - Tempo 10k
+    - rest
+    - Long Run 16k
+  week_6:
+    - rest
+    - Easy 10k
+    - Speed 3x1600
+    - Easy 8k
+    - Strength 6x1k
+    - rest
+    - Long Run 16k
+  week_5:
+    - rest
+    - Easy 10k
+    - Speed 5x1000
+    - Easy 8k
+    - Strength 4x1600
+    - rest
+    - Long Run 16k
+  week_4:
+    - rest
+    - Easy 10k
+    - Speed 4x1200
+    - Easy 8k
+    - Strength 3x2k
+    - rest
+    - Long Run 16k
+  week_3:
+    - rest
+    - Easy 10k
+    - Speed 3x1600
+    - Easy 8k
+    - Tempo 10k
+    - rest
+    - Long Run 16k
+  week_2:
+    - rest
+    - Easy 8k
+    - Speed 6x800
+    - Easy 6k
+    - Tempo 8k
+    - rest
+    - Long Run 13k
+  week_1:
+    - rest
+    - Easy 6k
+    - Easy 6k
+    - Easy 6k
+    - rest
+    - Easy 6k
+    - rest

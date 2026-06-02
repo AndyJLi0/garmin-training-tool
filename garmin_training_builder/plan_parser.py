@@ -108,8 +108,13 @@ def _parse_steps(steps_yaml, paces):
     return steps
 
 
-def parse_plan(yaml_path):
+def parse_plan(yaml_path, race_date=None):
     """Parse a YAML training plan file.
+
+    Args:
+        yaml_path: Path to the YAML plan file.
+        race_date: Optional race date (datetime.date). If provided and the plan
+                   uses schedule_template, dates are computed backwards from race day.
 
     Returns:
         tuple: (workouts_dict, schedule_list)
@@ -138,7 +143,12 @@ def parse_plan(yaml_path):
 
     # Parse schedule
     schedule = []
-    if "schedule" in plan:
+
+    if "schedule_template" in plan:
+        # Template-based schedule: weeks counted backwards from race day
+        schedule = _parse_schedule_template(plan["schedule_template"], workouts, race_date)
+    elif "schedule" in plan:
+        # Fixed-date schedule
         start_date = plan["schedule"]["start"]
         if isinstance(start_date, str):
             start_date = datetime.date.fromisoformat(start_date)
@@ -155,3 +165,56 @@ def parse_plan(yaml_path):
                     schedule.append((date, workout_name))
 
     return workouts, schedule
+
+
+def _parse_schedule_template(template, workouts, race_date):
+    """Parse a schedule_template (weeks before race) into dated schedule.
+
+    The template has keys like week_12, week_11, ..., week_1.
+    Week 1 is race week. Race day is the last day (Sunday) of week 1.
+    Each week starts on Monday.
+    """
+    if race_date is None:
+        return []
+
+    if isinstance(race_date, str):
+        race_date = datetime.date.fromisoformat(race_date)
+
+    # Find the highest week number to determine plan length
+    week_numbers = []
+    for key in template:
+        num = int(key.replace("week_", ""))
+        week_numbers.append(num)
+    week_numbers.sort(reverse=True)
+    total_weeks = week_numbers[0]
+
+    # Race day is the last day of week_1 (Sunday)
+    # Week 1 Monday = race_date - 6 days (if race is Sunday)
+    # More generally: find the Monday of race week
+    # race_date.weekday(): 0=Mon, 6=Sun
+    race_week_monday = race_date - datetime.timedelta(days=race_date.weekday())
+
+    # Week 1 starts at race_week_monday
+    # Week N starts at race_week_monday - (N-1)*7 days
+    schedule = []
+
+    for week_num in sorted(week_numbers, reverse=True):
+        key = f"week_{week_num}"
+        days = template[key]
+        weeks_before_race_week = week_num - 1
+        week_monday = race_week_monday - datetime.timedelta(weeks=weeks_before_race_week)
+
+        for day_offset, entry in enumerate(days):
+            if entry and entry.lower() != "rest":
+                date = week_monday + datetime.timedelta(days=day_offset)
+                for workout_name in entry.split(","):
+                    workout_name = workout_name.strip()
+                    if workout_name not in workouts:
+                        raise ValueError(
+                            f"Scheduled workout '{workout_name}' (week {week_num}, "
+                            f"day {day_offset+1}) not found in workouts section"
+                        )
+                    schedule.append((date, workout_name))
+
+    schedule.sort(key=lambda x: x[0])
+    return schedule

@@ -1,0 +1,227 @@
+# Hal Higdon Marathon - Novice 1
+# 18-week plan for first-time marathoners
+# Gradual mileage build with one long run per week
+
+meta:
+  name: "Hal Higdon Marathon Novice 1"
+  distance: marathon
+  weeks: 18
+  peak_km: 52
+  description: "Hal Higdon's classic beginner marathon plan. Build to 32km long run over 18 weeks."
+  level: beginner
+
+paces:
+  easy: "6:00-6:45"
+  recovery: "6:30-7:00"
+
+workouts:
+  Easy 5k:
+    - warmup: lap z2
+    - run: 5000m z2
+    - cooldown: lap z1
+  Easy 6k:
+    - warmup: lap z2
+    - run: 6000m z2
+    - cooldown: lap z1
+  Easy 8k:
+    - warmup: lap z2
+    - run: 8000m z2
+    - cooldown: lap z1
+  Easy 10k:
+    - warmup: lap z2
+    - run: 10000m z2
+    - cooldown: lap z1
+  Long Run 10k:
+    - warmup: 1000m z2
+    - run: 8000m z2
+    - cooldown: 1000m z1
+  Long Run 11k:
+    - warmup: 1000m z2
+    - run: 9000m z2
+    - cooldown: 1000m z1
+  Long Run 13k:
+    - warmup: 1000m z2
+    - run: 11000m z2
+    - cooldown: 1000m z1
+  Long Run 14k:
+    - warmup: 1000m z2
+    - run: 12000m z2
+    - cooldown: 1000m z1
+  Long Run 16k:
+    - warmup: 1000m z2
+    - run: 14000m z2
+    - cooldown: 1000m z1
+  Long Run 18k:
+    - warmup: 1000m z2
+    - run: 16000m z2
+    - cooldown: 1000m z1
+  Long Run 19k:
+    - warmup: 1000m z2
+    - run: 17000m z2
+    - cooldown: 1000m z1
+  Long Run 21k:
+    - warmup: 1000m z2
+    - run: 19000m z2
+    - cooldown: 1000m z1
+  Long Run 23k:
+    - warmup: 1000m z2
+    - run: 21000m z2
+    - cooldown: 1000m z1
+  Long Run 26k:
+    - warmup: 1000m z2
+    - run: 24000m z2
+    - cooldown: 1000m z1
+  Long Run 29k:
+    - warmup: 1000m z2
+    - run: 27000m z2
+    - cooldown: 1000m z1
+  Long Run 32k:
+    - warmup: 1000m z2
+    - run: 30000m z2
+    - cooldown: 1000m z1
+
+schedule_template:
+  week_18:
+    - rest
+    - Easy 5k
+    - Easy 5k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 10k
+  week_17:
+    - rest
+    - Easy 5k
+    - Easy 5k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 11k
+  week_16:
+    - rest
+    - Easy 5k
+    - Easy 6k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 13k
+  week_15:
+    - rest
+    - Easy 5k
+    - Easy 6k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 14k
+  week_14:
+    - rest
+    - Easy 6k
+    - Easy 6k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 16k
+  week_13:
+    - rest
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Easy 5k
+    - rest
+    - Long Run 13k
+  week_12:
+    - rest
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Easy 6k
+    - rest
+    - Long Run 18k
+  week_11:
+    - rest
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Easy 6k
+    - rest
+    - Long Run 14k
+  week_10:
+    - rest
+    - Easy 8k
+    - Easy 8k
+    - rest
+    - Easy 6k
+    - rest
+    - Long Run 21k
+  week_9:
+    - rest
+    - Easy 8k
+    - Easy 10k
+    - rest
+    - Easy 6k
+    - rest
+    - Long Run 16k
+  week_8:
+    - rest
+    - Easy 8k
+    - Easy 10k
+    - rest
+    - Easy 6k
+    - rest
+    - Long Run 23k
+  week_7:
+    - rest
+    - Easy 8k
+    - Easy 10k
+    - rest
+    - Easy 8k
+    - rest
+    - Long Run 19k
+  week_6:
+    - rest
+    - Easy 8k
+    - Easy 10k
+    - rest
+    - Easy 8k
+    - rest
+    - Long Run 26k
+  week_5:
+    - rest
+    - Easy 8k
+    - Easy 10k
+    - rest
+    - Easy 8k
+    - rest
+    - Long Run 19k
+  week_4:
+    - rest
+    - Easy 8k
+    - Easy 10k
+    - rest
+    - Easy 8k
+    - rest
+    - Long Run 29k
+  week_3:
+    - rest
+    - Easy 8k
+    - Easy 10k
+    - rest
+    - Easy 8k
+    - rest
+    - Long Run 32k
+  week_2:
+    - rest
+    - Easy 6k
+    - Easy 8k
+    - rest
+    - Easy 6k
+    - rest
+    - Long Run 13k
+  week_1:
+    - rest
+    - Easy 5k
+    - Easy 5k
+    - rest
+    - Easy 5k
+    - rest
+    - rest
