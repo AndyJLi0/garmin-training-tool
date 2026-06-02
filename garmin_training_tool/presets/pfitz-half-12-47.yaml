@@ -10,13 +10,8 @@ meta:
   description: "Pfitzinger 12-week half marathon plan for intermediate runners (47-63 km/week peak)"
   level: intermediate
 
-paces:
-  easy: "5:30-6:00"
-  general_aerobic: "5:00-5:30"
-  lt: "4:15-4:35"
-  vo2max: "3:50-4:10"
-  strides: "3:15-3:40"
-  recovery: "5:45-6:15"
+# Paces are defined in your session.json — not here.
+# This plan uses: $easy, $general_aerobic, $lt, $vo2max, $strides, $recovery
 
 workouts:
   # === ENDURANCE RUNS ===

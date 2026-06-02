@@ -15,7 +15,22 @@ from .workout_builder import (
 )
 
 
-def _resolve_target(target_def, paces):
+# Mapping from pace category to approximate HR zone (for HR-only mode)
+_PACE_TO_HR_ZONE = {
+    "recovery": 1,
+    "easy": 2,
+    "general_aerobic": 3,
+    "lt": 4,
+    "tempo": 4,
+    "threshold": 4,
+    "vo2max": 5,
+    "speed": 5,
+    "strides": 5,
+    "race": 4,
+}
+
+
+def _resolve_target(target_def, paces, target_mode=None):
     """Resolve a target definition from YAML into a target dict."""
     if target_def is None or target_def == "none":
         return no_target()
@@ -29,13 +44,25 @@ def _resolve_target(target_def, paces):
         # Pace reference: "$easy", "$lt", etc.
         if target_def.startswith("$"):
             pace_name = target_def[1:]
+
+            # HR-only mode: map pace names to HR zones
+            if target_mode == "hr":
+                zone = _PACE_TO_HR_ZONE.get(pace_name, 3)
+                return hr_zone_target(zone)
+
             if pace_name not in paces:
-                raise ValueError(f"Unknown pace '{pace_name}'. Defined paces: {list(paces.keys())}")
+                raise ValueError(
+                    f"Unknown pace '{pace_name}'. Define it in session.json under "
+                    f"\"paces\" or in the plan's paces section.\n"
+                    f"  Currently defined: {list(paces.keys()) if paces else '(none)'}"
+                )
             slow, fast = paces[pace_name]
             return pace_target(slow, fast)
 
         # Inline pace: "5:00-5:30"
         if "-" in target_def and ":" in target_def:
+            if target_mode == "hr":
+                return hr_zone_target(3)
             slow, fast = target_def.split("-")
             return pace_target(slow.strip(), fast.strip())
 
@@ -72,7 +99,7 @@ def _resolve_condition(condition_def):
     raise ValueError(f"Unknown condition format: {condition_def}")
 
 
-def _parse_steps(steps_yaml, paces):
+def _parse_steps(steps_yaml, paces, target_mode=None):
     """Parse a list of step definitions from YAML."""
     steps = []
     for step_def in steps_yaml:
@@ -82,18 +109,18 @@ def _parse_steps(steps_yaml, paces):
             # Repeat step
             if step_type.startswith("repeat"):
                 count = int(step_type.replace("repeat", "").strip("() "))
-                sub_steps = _parse_steps(step_def[step_type], paces)
+                sub_steps = _parse_steps(step_def[step_type], paces, target_mode)
                 steps.append(("repeat", count, sub_steps))
             else:
                 # Regular step: warmup, cooldown, run, recovery
                 details = step_def[step_type]
                 if isinstance(details, dict):
                     condition = _resolve_condition(details.get("duration") or details.get("distance") or "lap")
-                    target = _resolve_target(details.get("target"), paces)
+                    target = _resolve_target(details.get("target"), paces, target_mode)
                 elif isinstance(details, str):
                     parts = details.split()
                     condition = _resolve_condition(parts[0])
-                    target = _resolve_target(parts[1] if len(parts) > 1 else None, paces)
+                    target = _resolve_target(parts[1] if len(parts) > 1 else None, paces, target_mode)
                 else:
                     raise ValueError(f"Invalid step details: {details}")
 
@@ -108,13 +135,16 @@ def _parse_steps(steps_yaml, paces):
     return steps
 
 
-def parse_plan(yaml_path, race_date=None):
+def parse_plan(yaml_path, race_date=None, user_paces=None, target_mode=None):
     """Parse a YAML training plan file.
 
     Args:
         yaml_path: Path to the YAML plan file.
         race_date: Optional race date (datetime.date). If provided and the plan
                    uses schedule_template, dates are computed backwards from race day.
+        user_paces: Optional dict of user-defined paces from session.json.
+                    Used as fallback when plan doesn't define its own paces.
+        target_mode: Optional "hr" to convert all pace targets to HR zones instead.
 
     Returns:
         tuple: (workouts_dict, schedule_list)
@@ -124,8 +154,13 @@ def parse_plan(yaml_path, race_date=None):
     with open(yaml_path) as f:
         plan = yaml.safe_load(f)
 
-    # Parse pace definitions
+    # Parse pace definitions: plan paces override user paces
     paces = {}
+    if user_paces:
+        for name, value in user_paces.items():
+            if isinstance(value, str) and "-" in value:
+                slow, fast = value.split("-")
+                paces[name] = (slow.strip(), fast.strip())
     if "paces" in plan:
         for name, value in plan["paces"].items():
             if isinstance(value, str) and "-" in value:
@@ -138,7 +173,7 @@ def parse_plan(yaml_path, race_date=None):
     workouts = {}
     if "workouts" in plan:
         for workout_name, steps_yaml in plan["workouts"].items():
-            steps = _parse_steps(steps_yaml, paces)
+            steps = _parse_steps(steps_yaml, paces, target_mode)
             workouts[workout_name] = build_workout(workout_name, steps)
 
     # Parse schedule

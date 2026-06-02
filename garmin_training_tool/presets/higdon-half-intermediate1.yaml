@@ -1,0 +1,196 @@
+# Hal Higdon Half Marathon - Intermediate 1
+# 12-week plan for experienced runners
+# 5 runs/week including tempo, intervals, and longer long runs
+
+meta:
+  name: "Hal Higdon Half Marathon Intermediate 1"
+  distance: half-marathon
+  weeks: 12
+  peak_km: 55
+  description: "Hal Higdon Intermediate 1. 5 runs/week with tempo, intervals, and long runs up to 16km."
+  level: intermediate
+
+# Paces are defined in your session.json — not here.
+# This plan uses: $easy, $tempo, $speed, $race, $recovery
+
+workouts:
+  Easy 5k:
+    - warmup: lap z2
+    - run: 5000m z2
+    - cooldown: lap z1
+  Easy 6k:
+    - warmup: lap z2
+    - run: 6000m z2
+    - cooldown: lap z1
+  Easy 8k:
+    - warmup: lap z2
+    - run: 8000m z2
+    - cooldown: lap z1
+  Easy 10k:
+    - warmup: 1000m z2
+    - run: 8000m z2
+    - cooldown: 1000m z1
+  Tempo 5k:
+    - warmup: 1500m z2
+    - run: 5000m $tempo
+    - cooldown: 1500m z2
+  Tempo 6k:
+    - warmup: 1500m z2
+    - run: 6000m $tempo
+    - cooldown: 1500m z2
+  Tempo 8k:
+    - warmup: 2000m z2
+    - run: 8000m $tempo
+    - cooldown: 2000m z2
+  Intervals 5x800:
+    - warmup: 2000m z2
+    - repeat(5):
+      - run: 800m $speed
+      - recovery: 400m z1
+    - cooldown: 2000m z2
+  Intervals 6x800:
+    - warmup: 2000m z2
+    - repeat(6):
+      - run: 800m $speed
+      - recovery: 400m z1
+    - cooldown: 2000m z2
+  Intervals 7x800:
+    - warmup: 2000m z2
+    - repeat(7):
+      - run: 800m $speed
+      - recovery: 400m z1
+    - cooldown: 2000m z2
+  Race Pace 8k:
+    - warmup: 1500m z2
+    - run: 8000m $race
+    - cooldown: 1500m z2
+  Long Run 10k:
+    - warmup: 1000m z2
+    - run: 8000m z2
+    - cooldown: 1000m z1
+  Long Run 11k:
+    - warmup: 1000m z2
+    - run: 9000m z2
+    - cooldown: 1000m z1
+  Long Run 13k:
+    - warmup: 1000m z2
+    - run: 11000m z2
+    - cooldown: 1000m z1
+  Long Run 14k:
+    - warmup: 1000m z2
+    - run: 12000m z2
+    - cooldown: 1000m z1
+  Long Run 16k:
+    - warmup: 1000m z2
+    - run: 14000m z2
+    - cooldown: 1000m z1
+  Long Run 18k:
+    - warmup: 1000m z2
+    - run: 16000m z2
+    - cooldown: 1000m z1
+  Long Run 19k:
+    - warmup: 1000m z2
+    - run: 17000m z2
+    - cooldown: 1000m z1
+  Long Run 21k:
+    - warmup: 1000m z2
+    - run: 19000m z2
+    - cooldown: 1000m z1
+
+schedule_template:
+  week_12:
+    - rest
+    - Easy 5k
+    - Tempo 5k
+    - Easy 5k
+    - Intervals 5x800
+    - rest
+    - Long Run 10k
+  week_11:
+    - rest
+    - Easy 5k
+    - Tempo 5k
+    - Easy 5k
+    - Intervals 5x800
+    - rest
+    - Long Run 11k
+  week_10:
+    - rest
+    - Easy 6k
+    - Tempo 6k
+    - Easy 5k
+    - Intervals 6x800
+    - rest
+    - Long Run 13k
+  week_9:
+    - rest
+    - Easy 6k
+    - Tempo 6k
+    - Easy 6k
+    - Intervals 6x800
+    - rest
+    - Long Run 14k
+  week_8:
+    - rest
+    - Easy 6k
+    - Tempo 6k
+    - Easy 6k
+    - Intervals 6x800
+    - rest
+    - Long Run 16k
+  week_7:
+    - rest
+    - Easy 6k
+    - Tempo 8k
+    - Easy 5k
+    - Intervals 5x800
+    - rest
+    - Long Run 11k
+  week_6:
+    - rest
+    - Easy 8k
+    - Tempo 8k
+    - Easy 6k
+    - Intervals 7x800
+    - rest
+    - Long Run 18k
+  week_5:
+    - rest
+    - Easy 8k
+    - Tempo 8k
+    - Easy 6k
+    - Intervals 7x800
+    - rest
+    - Long Run 19k
+  week_4:
+    - rest
+    - Easy 8k
+    - Tempo 6k
+    - Easy 5k
+    - Intervals 5x800
+    - rest
+    - Long Run 13k
+  week_3:
+    - rest
+    - Easy 10k
+    - Tempo 8k
+    - Easy 6k
+    - Intervals 7x800
+    - rest
+    - Long Run 21k
+  week_2:
+    - rest
+    - Easy 8k
+    - Tempo 6k
+    - Easy 5k
+    - Race Pace 8k
+    - rest
+    - Long Run 13k
+  week_1:
+    - rest
+    - Easy 5k
+    - Tempo 5k
+    - rest
+    - Easy 5k
+    - rest
+    - rest

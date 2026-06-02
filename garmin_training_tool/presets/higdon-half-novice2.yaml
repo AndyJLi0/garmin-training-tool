@@ -1,17 +1,17 @@
-# Hal Higdon Half Marathon - Novice 1
-# 12-week plan for first-time half marathoners
-# Simple structure: easy runs + one long run per week
+# Hal Higdon Half Marathon - Novice 2
+# 12-week plan for runners with some base fitness
+# Adds pace work and cross-training to Novice 1 structure
 
 meta:
-  name: "Hal Higdon Half Marathon Novice 1"
+  name: "Hal Higdon Half Marathon Novice 2"
   distance: half-marathon
   weeks: 12
-  peak_km: 40
-  description: "Hal Higdon's beginner-friendly 12-week half marathon plan. 3 runs + 1 long run per week."
-  level: beginner
+  peak_km: 45
+  description: "Hal Higdon Novice 2. Adds tempo runs and pace work to the beginner framework."
+  level: beginner-intermediate
 
 # Paces are defined in your session.json — not here.
-# This plan uses: $easy, $recovery (or set target_mode: "hr" for HR zones only)
+# This plan uses: $easy, $tempo, $race, $recovery
 
 workouts:
   Easy 5k:
@@ -26,6 +26,26 @@ workouts:
     - warmup: lap z2
     - run: 8000m z2
     - cooldown: lap z1
+  Tempo 5k:
+    - warmup: 1500m z2
+    - run: 5000m $tempo
+    - cooldown: 1500m z2
+  Tempo 6k:
+    - warmup: 1500m z2
+    - run: 6000m $tempo
+    - cooldown: 1500m z2
+  Tempo 8k:
+    - warmup: 1500m z2
+    - run: 8000m $tempo
+    - cooldown: 1500m z2
+  Race Pace 5k:
+    - warmup: 1500m z2
+    - run: 5000m $race
+    - cooldown: 1500m z2
+  Race Pace 8k:
+    - warmup: 1500m z2
+    - run: 8000m $race
+    - cooldown: 1500m z2
   Long Run 8k:
     - warmup: 1000m z2
     - run: 6000m z2
@@ -63,7 +83,7 @@ schedule_template:
   week_12:
     - rest
     - Easy 5k
-    - Easy 5k
+    - Tempo 5k
     - rest
     - Easy 5k
     - rest
@@ -71,7 +91,7 @@ schedule_template:
   week_11:
     - rest
     - Easy 5k
-    - Easy 5k
+    - Tempo 5k
     - rest
     - Easy 5k
     - rest
@@ -79,31 +99,31 @@ schedule_template:
   week_10:
     - rest
     - Easy 5k
-    - Easy 6k
+    - Tempo 6k
     - rest
-    - Easy 5k
+    - Easy 6k
     - rest
     - Long Run 11k
   week_9:
     - rest
-    - Easy 5k
     - Easy 6k
+    - Tempo 6k
     - rest
-    - Easy 5k
+    - Easy 6k
     - rest
     - Long Run 13k
   week_8:
     - rest
     - Easy 6k
-    - Easy 6k
+    - Tempo 6k
     - rest
-    - Easy 5k
+    - Easy 6k
     - rest
     - Long Run 14k
   week_7:
     - rest
     - Easy 6k
-    - Easy 8k
+    - Tempo 8k
     - rest
     - Easy 5k
     - rest
@@ -111,41 +131,41 @@ schedule_template:
   week_6:
     - rest
     - Easy 6k
-    - Easy 8k
+    - Tempo 8k
     - rest
-    - Easy 6k
+    - Race Pace 5k
     - rest
     - Long Run 16k
   week_5:
     - rest
-    - Easy 6k
     - Easy 8k
+    - Tempo 8k
     - rest
-    - Easy 6k
+    - Race Pace 5k
     - rest
     - Long Run 18k
   week_4:
     - rest
-    - Easy 6k
     - Easy 8k
+    - Tempo 6k
     - rest
-    - Easy 6k
+    - Race Pace 5k
     - rest
     - Long Run 13k
   week_3:
     - rest
     - Easy 8k
-    - Easy 8k
+    - Tempo 8k
     - rest
-    - Easy 6k
+    - Race Pace 8k
     - rest
     - Long Run 19k
   week_2:
     - rest
     - Easy 6k
-    - Easy 8k
+    - Tempo 6k
     - rest
-    - Easy 5k
+    - Race Pace 5k
     - rest
     - Long Run 13k
   week_1:

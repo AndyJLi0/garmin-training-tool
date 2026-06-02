@@ -80,13 +80,29 @@ Create a `session.json` file in your working directory:
 {
   "session_cookie": "Fe26.2*1*your-long-session-cookie-here...",
   "csrf_token": "your-csrf-token-here",
-  "extra_cookies": {
-    "GARMIN-SSO-CUST-GUID": "your-guid-if-needed"
+  "extra_cookies": {},
+  "target_mode": "pace",
+  "paces": {
+    "easy": "5:30-6:00",
+    "general_aerobic": "5:00-5:30",
+    "tempo": "4:15-4:35",
+    "lt": "4:15-4:35",
+    "vo2max": "3:50-4:10",
+    "speed": "3:50-4:10",
+    "strides": "3:15-3:40",
+    "recovery": "5:45-6:15",
+    "race": "4:30-4:50"
   }
 }
 ```
 
-> **Note:** Session cookies expire after a few days. If you get errors, grab fresh values from your browser.
+**Paces** are in min:sec per km format as a range (slow-fast). Adjust these to your own fitness level. Not all plans use every pace — the preset will tell you which ones it needs.
+
+**Target mode** options:
+- `"pace"` — workouts display pace ranges on your watch (requires paces defined)
+- `"hr"` — workouts use heart rate zones only (no paces needed; easier to set up)
+
+> **Note:** Session cookies expire after a few days. If you get errors, grab fresh values from your browser. Your paces stay the same.
 
 > **Security:** `session.json` is in `.gitignore` — never commit it.
 
@@ -115,6 +131,9 @@ The tool calculates all training dates backwards from your race date and schedul
 |--------|----------|-------|-------|
 | `pfitz-half-12-47` | Half Marathon | 12 | Intermediate |
 | `higdon-half-novice1` | Half Marathon | 12 | Beginner |
+| `higdon-half-novice2` | Half Marathon | 12 | Beginner-Intermediate |
+| `higdon-half-intermediate1` | Half Marathon | 12 | Intermediate |
+| `higdon-half-intermediate2` | Half Marathon | 12 | Intermediate-Advanced |
 | `hansons-half-beginner` | Half Marathon | 18 | Beginner-Intermediate |
 | `higdon-marathon-novice1` | Marathon | 18 | Beginner |
 

@@ -66,10 +66,15 @@ def cmd_import(args):
     if args.race_date:
         race_date = datetime.date.fromisoformat(args.race_date)
 
+    user_paces = session.get("paces")
+    target_mode = session.get("target_mode")
+
     print(f"Parsing plan: {plan_path}")
     if race_date:
         print(f"Race date: {race_date}")
-    workouts, schedule = parse_plan(plan_path, race_date=race_date)
+    if target_mode == "hr":
+        print("Target mode: Heart Rate zones (no pace targets)")
+    workouts, schedule = parse_plan(plan_path, race_date=race_date, user_paces=user_paces, target_mode=target_mode)
     print(f"Found {len(workouts)} workouts, {len(schedule)} scheduled days")
 
     # Create workouts
@@ -142,7 +147,17 @@ def cmd_validate(args):
         if args.race_date:
             race_date = datetime.date.fromisoformat(args.race_date)
 
-        workouts, schedule = parse_plan(plan_path, race_date=race_date)
+        # Try to load paces from session.json if it exists
+        user_paces = None
+        target_mode = None
+        session_path = args.session or "session.json"
+        if os.path.exists(session_path):
+            with open(session_path) as f:
+                session = json.load(f)
+            user_paces = session.get("paces")
+            target_mode = session.get("target_mode")
+
+        workouts, schedule = parse_plan(plan_path, race_date=race_date, user_paces=user_paces, target_mode=target_mode)
         print(f"Plan is valid!")
         print(f"  Workouts: {len(workouts)}")
         print(f"  Scheduled days: {len(schedule)}")
@@ -273,11 +288,73 @@ def cmd_setup(args):
         "extra_cookies": {},
     }
 
+    # Pace / target mode configuration
+    print()
+    print("=" * 60)
+    print("  Training Targets Configuration")
+    print("=" * 60)
+    print()
+    print("How do you want workout targets displayed on your watch?")
+    print()
+    print("  1. Pace targets (min/km ranges for each effort level)")
+    print("  2. Heart rate zones only (simpler, no pace needed)")
+    print()
+
+    mode_choice = ""
+    try:
+        mode_choice = input("Choose [1/2] (default: 1): ").strip()
+    except (EOFError, KeyboardInterrupt):
+        print()
+
+    if mode_choice == "2":
+        session_data["target_mode"] = "hr"
+        print("\nHR zone mode selected. Easy runs = Z2, Tempo = Z4, VO2max = Z5, etc.")
+    else:
+        session_data["target_mode"] = "pace"
+        print()
+        print("Enter your training paces in min:sec per km (format: SLOW-FAST)")
+        print("Example: easy pace might be 5:30-6:00")
+        print("Press Enter to skip any pace (HR zone will be used as fallback).")
+        print()
+
+        pace_names = [
+            ("easy", "Easy / Endurance", "e.g. 5:30-6:00"),
+            ("general_aerobic", "General Aerobic", "e.g. 5:00-5:30"),
+            ("tempo", "Tempo / Lactate Threshold", "e.g. 4:15-4:35"),
+            ("vo2max", "VO2max / Speed", "e.g. 3:50-4:10"),
+            ("strides", "Strides / Sprints", "e.g. 3:15-3:40"),
+            ("recovery", "Recovery", "e.g. 5:45-6:15"),
+            ("race", "Race pace", "e.g. 4:30-4:50"),
+        ]
+
+        paces = {}
+        for key, label, example in pace_names:
+            try:
+                value = input(f"  {label} ({example}): ").strip()
+                if value and "-" in value:
+                    paces[key] = value
+            except (EOFError, KeyboardInterrupt):
+                print()
+                break
+
+        if paces:
+            session_data["paces"] = paces
+            # Also set common aliases
+            if "tempo" in paces and "lt" not in paces:
+                session_data["paces"]["lt"] = paces["tempo"]
+            if "vo2max" in paces and "speed" not in paces:
+                session_data["paces"]["speed"] = paces["vo2max"]
+            if "tempo" in paces and "strength" not in paces:
+                session_data["paces"]["strength"] = paces["tempo"]
+
     with open(output_path, "w") as f:
         json.dump(session_data, f, indent=2)
 
     print(f"\nSession saved to: {output_path}")
-    print("You can now run: garmin-training-tool import your_plan.yaml")
+    print()
+    print("You're all set! Try:")
+    print(f"  garmin-training-tool presets")
+    print(f"  garmin-training-tool import pfitz-half-12-47 --race-date 2026-09-13")
 
 
 def main():

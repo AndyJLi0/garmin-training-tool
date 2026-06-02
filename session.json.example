@@ -1,5 +1,17 @@
 {
   "session_cookie": "PASTE_YOUR_SESSION_COOKIE_HERE",
   "csrf_token": "PASTE_YOUR_CSRF_TOKEN_HERE",
-  "extra_cookies": {}
+  "extra_cookies": {},
+  "target_mode": "pace",
+  "paces": {
+    "easy": "5:30-6:00",
+    "general_aerobic": "5:00-5:30",
+    "lt": "4:15-4:35",
+    "tempo": "4:15-4:35",
+    "vo2max": "3:50-4:10",
+    "speed": "3:50-4:10",
+    "strides": "3:15-3:40",
+    "recovery": "5:45-6:15",
+    "race": "4:30-4:50"
+  }
 }

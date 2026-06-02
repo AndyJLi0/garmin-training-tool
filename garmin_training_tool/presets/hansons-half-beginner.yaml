@@ -10,12 +10,8 @@ meta:
   description: "Hansons method for half marathon. 6 days/week, cumulative fatigue, capped long run at 16km."
   level: beginner-intermediate
 
-paces:
-  easy: "5:45-6:15"
-  tempo: "4:40-5:00"
-  strength: "4:20-4:40"
-  speed: "4:00-4:20"
-  recovery: "6:00-6:30"
+# Paces are defined in your session.json — not here.
+# This plan uses: $easy, $tempo, $strength, $speed, $recovery
 
 workouts:
   Easy 6k:

@@ -10,9 +10,8 @@ meta:
   description: "Hal Higdon's classic beginner marathon plan. Build to 32km long run over 18 weeks."
   level: beginner
 
-paces:
-  easy: "6:00-6:45"
-  recovery: "6:30-7:00"
+# Paces are defined in your session.json — not here.
+# This plan uses: $easy, $recovery (or set target_mode: "hr" for HR zones only)
 
 workouts:
   Easy 5k:
