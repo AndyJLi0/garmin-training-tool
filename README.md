@@ -1,4 +1,4 @@
-# Garmin Training Builder
+# Garmin Training Tool
 
 Create and schedule structured running workouts on Garmin Connect from simple YAML training plans. Define your workouts once, upload them all, and see them on your watch calendar.
 
@@ -22,8 +22,8 @@ Garmin Connect's web interface makes you create workouts one at a time. If you'r
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/garmin-training-builder.git
-cd garmin-training-builder
+git clone https://github.com/YOUR_USERNAME/garmin-training-tool.git
+cd garmin-training-tool
 uv sync
 ```
 
@@ -59,7 +59,7 @@ You need two values from your browser: a **session cookie** and a **CSRF token**
 #### Quick Setup (interactive):
 
 ```bash
-uv run garmin-training-builder setup
+uv run garmin-training-tool setup
 ```
 
 This will prompt you for the values and create `session.json`.
@@ -90,13 +90,13 @@ The fastest way to get started — use a built-in training plan and just specify
 
 ```bash
 # See available plans
-uv run garmin-training-builder presets
+uv run garmin-training-tool presets
 
 # Validate a plan (see what dates it would schedule)
-uv run garmin-training-builder validate pfitz-half-12-47 --race-date 2026-09-13
+uv run garmin-training-tool validate pfitz-half-12-47 --race-date 2026-09-13
 
 # Import to Garmin Connect
-uv run garmin-training-builder import pfitz-half-12-47 --race-date 2026-09-13
+uv run garmin-training-tool import pfitz-half-12-47 --race-date 2026-09-13
 ```
 
 The tool calculates all training dates backwards from your race date and schedules everything automatically.
@@ -117,7 +117,7 @@ The tool calculates all training dates backwards from your race date and schedul
 Check your YAML is correct without uploading anything:
 
 ```bash
-uv run garmin-training-builder validate examples/5k_plan.yaml
+uv run garmin-training-tool validate examples/5k_plan.yaml
 ```
 
 #### Import a Plan
@@ -125,13 +125,13 @@ uv run garmin-training-builder validate examples/5k_plan.yaml
 Upload workouts and schedule them:
 
 ```bash
-uv run garmin-training-builder import my_plan.yaml
+uv run garmin-training-tool import my_plan.yaml
 ```
 
 Create workouts without scheduling:
 
 ```bash
-uv run garmin-training-builder import my_plan.yaml --no-schedule
+uv run garmin-training-tool import my_plan.yaml --no-schedule
 ```
 
 ### List Workouts
@@ -139,7 +139,7 @@ uv run garmin-training-builder import my_plan.yaml --no-schedule
 See what's already on your account:
 
 ```bash
-uv run garmin-training-builder list
+uv run garmin-training-tool list
 ```
 
 ## Writing Training Plans
@@ -291,7 +291,7 @@ schedule:
 Preset plans come with default pace targets. To customize them for your fitness level, copy the preset and edit the `paces` section:
 
 ```bash
-cp $(uv run python -c "from garmin_training_builder.presets import get_preset_path; print(get_preset_path('pfitz-half-12-47'))") my_plan.yaml
+cp $(uv run python -c "from garmin_training_tool.presets import get_preset_path; print(get_preset_path('pfitz-half-12-47'))") my_plan.yaml
 ```
 
 Then edit `my_plan.yaml` and change the paces:
@@ -321,16 +321,16 @@ schedule:
 ### "Your session may have expired"
 Your browser cookies have expired. Open Garmin Connect in your browser, navigate to the workouts page, and grab fresh `session` cookie and `connect-csrf-token` values.
 
-### "Failed to spawn: garmin-training-builder"
+### "Failed to spawn: garmin-training-tool"
 If using `uv`, make sure you're in the project directory and run:
 ```bash
 uv sync
 ```
-Then use `uv run garmin-training-builder` (not just `garmin-training-builder`).
+Then use `uv run garmin-training-tool` (not just `garmin-training-tool`).
 
 Alternatively, run as a module:
 ```bash
-uv run python -m garmin_training_builder
+uv run python -m garmin_training_tool
 ```
 
 ### Workouts created but not visible on watch

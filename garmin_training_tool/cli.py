@@ -1,4 +1,4 @@
-"""Command-line interface for Garmin Training Builder."""
+"""Command-line interface for Garmin Training Tool."""
 
 import argparse
 import datetime
@@ -20,7 +20,7 @@ def load_session(session_path=None):
         print(f"Error: Session file not found at '{session_path}'")
         print()
         print("To get started, run:")
-        print("  garmin-training-builder setup")
+        print("  garmin-training-tool setup")
         print()
         print("Or create session.json manually (see README).")
         sys.exit(1)
@@ -181,10 +181,10 @@ def cmd_presets(args):
         print()
 
     print("Usage:")
-    print("  garmin-training-builder import <preset-name> --race-date YYYY-MM-DD")
+    print("  garmin-training-tool import <preset-name> --race-date YYYY-MM-DD")
     print()
     print("Example:")
-    print("  garmin-training-builder import pfitz-half-12-47 --race-date 2026-09-13")
+    print("  garmin-training-tool import pfitz-half-12-47 --race-date 2026-09-13")
 
 
 def cmd_setup(args):
@@ -277,12 +277,12 @@ def cmd_setup(args):
         json.dump(session_data, f, indent=2)
 
     print(f"\nSession saved to: {output_path}")
-    print("You can now run: garmin-training-builder import your_plan.yaml")
+    print("You can now run: garmin-training-tool import your_plan.yaml")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        prog="garmin-training-builder",
+        prog="garmin-training-tool",
         description="Create and schedule running workouts on Garmin Connect from YAML plans",
     )
     parser.add_argument(
