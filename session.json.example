@@ -1,7 +1,5 @@
 {
-  "session_cookie": "Fe26.2*1*your-very-long-session-cookie-value-from-browser...",
-  "csrf_token": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-  "extra_cookies": {
-    "GARMIN-SSO-CUST-GUID": "your-guid-here"
-  }
+  "session_cookie": "PASTE_YOUR_SESSION_COOKIE_HERE",
+  "csrf_token": "PASTE_YOUR_CSRF_TOKEN_HERE",
+  "extra_cookies": {}
 }

@@ -207,16 +207,65 @@ def cmd_setup(args):
     print("   - 'cookie' header -> the 'session=Fe26.2*...' value")
     print("   - 'connect-csrf-token' header -> the CSRF token")
     print()
+    print("=" * 60)
+    print()
+    print("Because cookie values contain special characters (* ! etc.),")
+    print("pasting them directly can cause shell issues.")
+    print()
+    print("RECOMMENDED: Create session.json manually by pasting into a file:")
+    print()
 
-    session_cookie = input("Paste your session cookie value (starts with Fe26.2*): ").strip()
+    output_path = args.output or "session.json"
+    example_path = output_path + ".example"
+
+    print(f'  1. Copy session.json.example to {output_path}')
+    print(f'  2. Open {output_path} in a text editor')
+    print(f'  3. Replace the placeholder values with your real values')
+    print()
+    print("Alternatively, paste your values here (press Enter twice to skip).")
+    print()
+
+    print("CSRF Token (short UUID like cc526168-e8b9-4b6f-...): ")
+    csrf_token = ""
+    try:
+        csrf_token = input("> ").strip()
+    except (EOFError, KeyboardInterrupt):
+        print()
+
+    if not csrf_token:
+        print()
+        print(f"No input received. Please create {output_path} manually.")
+        print(f"See session.json.example for the format.")
+        sys.exit(0)
+
+    print()
+    print("Session cookie (the long Fe26.2*... value):")
+    print("TIP: Paste it into a temp file and provide the path, OR paste directly.")
+    print("     If pasting directly, press Enter when done.")
+    print()
+
+    session_cookie = ""
+    try:
+        line = input("> ").strip()
+        if os.path.isfile(line):
+            with open(line) as f:
+                session_cookie = f.read().strip()
+            print(f"  Read cookie from file: {line}")
+        else:
+            session_cookie = line
+    except (EOFError, KeyboardInterrupt):
+        print()
+
     if not session_cookie:
         print("Error: Session cookie is required.")
         sys.exit(1)
 
-    csrf_token = input("Paste your connect-csrf-token value: ").strip()
-    if not csrf_token:
-        print("Error: CSRF token is required.")
-        sys.exit(1)
+    # Clean up - remove "session=" prefix if they copied the whole cookie header
+    if session_cookie.startswith("session="):
+        session_cookie = session_cookie[len("session="):]
+    # Trim at semicolon if they pasted multiple cookies
+    if ";" in session_cookie:
+        session_cookie = session_cookie.split(";")[0].strip()
 
     session_data = {
         "session_cookie": session_cookie,
@@ -224,20 +273,6 @@ def cmd_setup(args):
         "extra_cookies": {},
     }
 
-    # Optional: additional cookies
-    print()
-    print("Optional: paste additional cookies (one per line, format: name=value)")
-    print("Common ones: GARMIN-SSO-CUST-GUID, SESSIONID")
-    print("Press Enter on empty line to finish:")
-    while True:
-        line = input("  ").strip()
-        if not line:
-            break
-        if "=" in line:
-            key, value = line.split("=", 1)
-            session_data["extra_cookies"][key.strip()] = value.strip()
-
-    output_path = args.output or "session.json"
     with open(output_path, "w") as f:
         json.dump(session_data, f, indent=2)
 
