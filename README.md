@@ -24,7 +24,7 @@ Garmin Connect's web interface makes you create workouts one at a time. If you'r
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/garmin-training-tool.git
+git clone https://github.com/AndyJLi0/garmin-training-tool.git
 cd garmin-training-tool
 uv sync
 ```
