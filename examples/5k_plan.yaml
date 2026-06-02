@@ -1,0 +1,94 @@
+# Example: 4-week 5K training plan
+# Targets a runner aiming for a ~22:00 5K
+
+paces:
+  easy: "5:30-6:00"
+  tempo: "4:30-4:50"
+  vo2max: "4:00-4:20"
+  strides: "3:20-3:45"
+  recovery: "6:00-6:30"
+
+workouts:
+  Easy 5k:
+    - warmup: lap z2
+    - run: 5000m z2
+    - cooldown: lap z1
+
+  Easy 8k:
+    - warmup: 1000m z2
+    - run: 6000m z2
+    - cooldown: 1000m z1
+
+  Tempo 6k:
+    - warmup: 2000m z2
+    - run: 20min $tempo
+    - cooldown: 2000m z2
+
+  VO2max Intervals:
+    - warmup: 2000m z2
+    - repeat(5):
+      - run: 1000m $vo2max
+      - recovery: 3min z2
+    - cooldown: 2000m z2
+
+  Easy + Strides:
+    - warmup: 1000m z2
+    - run: 4000m z2
+    - repeat(6):
+      - run: 100m $strides
+      - recovery: 200m z1
+    - cooldown: 1000m z2
+
+  Long Run 10k:
+    - warmup: 1000m z2
+    - run: 8000m z2
+    - cooldown: 1000m z1
+
+  Long Run 12k:
+    - warmup: 1000m z2
+    - run: 10000m z2
+    - cooldown: 1000m z1
+
+  Recovery 4k:
+    - warmup: lap z1
+    - run: 4000m $recovery
+    - cooldown: lap z1
+
+schedule:
+  start: "2026-07-06"
+  days:
+    # Week 1
+    - rest
+    - Easy 5k
+    - Easy + Strides
+    - rest
+    - Tempo 6k
+    - Recovery 4k
+    - Long Run 10k
+
+    # Week 2
+    - rest
+    - Easy 5k
+    - VO2max Intervals
+    - rest
+    - Easy + Strides
+    - Recovery 4k
+    - Long Run 12k
+
+    # Week 3
+    - rest
+    - Easy 8k
+    - VO2max Intervals
+    - rest
+    - Tempo 6k
+    - Recovery 4k
+    - Long Run 12k
+
+    # Week 4 (taper)
+    - rest
+    - Easy 5k
+    - Easy + Strides
+    - rest
+    - Recovery 4k
+    - rest
+    - Easy 5k

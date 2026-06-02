@@ -1,0 +1,27 @@
+# Minimal example: one week of easy running
+# Good starting point to test your session works
+
+paces:
+  easy: "5:30-6:00"
+
+workouts:
+  Easy 30min:
+    - warmup: lap z2
+    - run: 30min z2
+    - cooldown: lap z1
+
+  Easy 45min:
+    - warmup: lap z2
+    - run: 45min z2
+    - cooldown: lap z1
+
+schedule:
+  start: "2026-06-09"
+  days:
+    - rest
+    - Easy 30min
+    - rest
+    - Easy 30min
+    - rest
+    - rest
+    - Easy 45min

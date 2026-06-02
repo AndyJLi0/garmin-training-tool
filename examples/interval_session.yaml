@@ -1,0 +1,36 @@
+# Example: single interval workout (no schedule)
+# Useful for creating one-off workouts
+
+paces:
+  easy: "5:30-6:00"
+  threshold: "4:15-4:35"
+  vo2max: "3:50-4:10"
+  strides: "3:15-3:40"
+
+workouts:
+  VO2max 6x1000m:
+    - warmup: 2000m z2
+    - repeat(6):
+      - run: 1000m $vo2max
+      - recovery: 3min z2
+    - cooldown: 2000m z2
+
+  Tempo 20min:
+    - warmup: 2000m z2
+    - run: 20min $threshold
+    - cooldown: 2000m z2
+
+  Progression Run 15k:
+    - warmup: 1000m z2
+    - run: 8000m z2
+    - run: 3000m z3
+    - run: 3000m $threshold
+
+  Fartlek 10k:
+    - warmup: 2000m z2
+    - repeat(8):
+      - run: 2min $threshold
+      - recovery: 2min z2
+    - cooldown: 2000m z2
+
+# No schedule section - workouts will be created but not scheduled
