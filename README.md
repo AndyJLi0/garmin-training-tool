@@ -2,6 +2,8 @@
 
 Create and schedule structured running workouts on Garmin Connect from simple YAML training plans. Define your workouts once, upload them all, and see them on your watch calendar.
 
+![Garmin Connect calendar with scheduled workouts](assets/calendar-example.png)
+
 ## Why This Exists
 
 Garmin Connect's web interface makes you create workouts one at a time. If you're following a structured plan (Pfitzinger, Daniels, Hanson, etc.), that means clicking through 50+ workouts manually. This tool lets you define your entire plan in a YAML file and upload everything in one shot.
@@ -50,11 +52,17 @@ You need two values from your browser: a **session cookie** and a **CSRF token**
 5. Navigate to the **Workouts** page (connect.garmin.com/modern/workouts)
 6. In the Network tab, filter requests by typing `workout-service`
 7. Click on any request to a URL containing `workout-service`
-8. In the **Request Headers** section, find:
+8. In the **Headers** tab, scroll to **Request Headers** and find:
 
-   **`cookie`** header — look for the value starting with `session=Fe26.2*...` (it's very long). Copy everything from `Fe26.2*` to the end of that cookie value (up to the next `;` or end of line).
+   **`connect-csrf-token`** — a short UUID like `cc526168-e8b9-4b6f-b77f-ce0e5c14d038`
 
-   **`connect-csrf-token`** header — a short UUID like `cc526168-e8b9-4b6f-b77f-ce0e5c14d038`
+   ![Finding the CSRF token in request headers](assets/csrf-token.png)
+
+9. Switch to the **Cookies** tab and find:
+
+   **`session`** — the value starts with `Fe26.2*...` (it's very long). Copy the entire value.
+
+   ![Finding the session cookie](assets/session-cookie.png)
 
 #### Quick Setup (interactive):
 
