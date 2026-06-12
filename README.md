@@ -54,7 +54,7 @@ You need two values from your browser: a **session cookie** and a **CSRF token**
 7. Click on any request to a URL containing `workout-service`
 8. In the **Headers** tab, scroll to **Request Headers** and find:
 
-   **`connect-csrf-token`** — a short UUID like `cc526168-e8b9-4b6f-b77f-ce0e5c14d038`
+   **`connect-csrf-token`** — a short UUID like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
 
    ![Finding the CSRF token in request headers](assets/csrf-token.png)
 
