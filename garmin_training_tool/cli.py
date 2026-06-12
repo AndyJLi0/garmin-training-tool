@@ -68,13 +68,16 @@ def cmd_import(args):
 
     user_paces = session.get("paces")
     target_mode = session.get("target_mode")
+    lthr = session.get("lthr")
 
     print(f"Parsing plan: {plan_path}")
     if race_date:
         print(f"Race date: {race_date}")
     if target_mode == "hr":
         print("Target mode: Heart Rate zones (no pace targets)")
-    workouts, schedule = parse_plan(plan_path, race_date=race_date, user_paces=user_paces, target_mode=target_mode)
+    if lthr:
+        print(f"LTHR: {lthr} bpm")
+    workouts, schedule = parse_plan(plan_path, race_date=race_date, user_paces=user_paces, target_mode=target_mode, lthr=lthr)
     print(f"Found {len(workouts)} workouts, {len(schedule)} scheduled days")
 
     # Create workouts
@@ -150,14 +153,16 @@ def cmd_validate(args):
         # Try to load paces from session.json if it exists
         user_paces = None
         target_mode = None
+        lthr = None
         session_path = args.session or "session.json"
         if os.path.exists(session_path):
             with open(session_path) as f:
                 session = json.load(f)
             user_paces = session.get("paces")
             target_mode = session.get("target_mode")
+            lthr = session.get("lthr")
 
-        workouts, schedule = parse_plan(plan_path, race_date=race_date, user_paces=user_paces, target_mode=target_mode)
+        workouts, schedule = parse_plan(plan_path, race_date=race_date, user_paces=user_paces, target_mode=target_mode, lthr=lthr)
         print(f"Plan is valid!")
         print(f"  Workouts: {len(workouts)}")
         print(f"  Scheduled days: {len(schedule)}")
@@ -287,6 +292,39 @@ def cmd_setup(args):
         "csrf_token": csrf_token,
         "extra_cookies": {},
     }
+
+    # Heart rate configuration
+    print()
+    print("=" * 60)
+    print("  Heart Rate Configuration")
+    print("=" * 60)
+    print()
+    print("Many workouts use HR zone targets (z1-z5). To get correct BPM")
+    print("ranges on your watch, enter your Lactate Threshold Heart Rate (LTHR).")
+    print()
+    print("Your LTHR is roughly your average HR during a 30-min all-out effort.")
+    print("You can find it in Garmin Connect under Performance Stats > Heart Rate Zones.")
+    print()
+
+    lthr_input = ""
+    try:
+        lthr_input = input("LTHR in bpm (e.g. 170): ").strip()
+    except (EOFError, KeyboardInterrupt):
+        print()
+
+    if lthr_input and lthr_input.isdigit():
+        lthr = int(lthr_input)
+        session_data["lthr"] = lthr
+        from .plan_parser import compute_hr_zones
+        zones = compute_hr_zones(lthr)
+        print(f"\n  Computed HR zones from LTHR={lthr}:")
+        print(f"    Z1: {zones[1][0]}-{zones[1][1]} bpm (Recovery)")
+        print(f"    Z2: {zones[2][0]}-{zones[2][1]} bpm (Easy/Endurance)")
+        print(f"    Z3: {zones[3][0]}-{zones[3][1]} bpm (Aerobic)")
+        print(f"    Z4: {zones[4][0]}-{zones[4][1]} bpm (Threshold)")
+        print(f"    Z5: {zones[5][0]}-{zones[5][1]} bpm (VO2max)")
+    else:
+        print("No LTHR entered — you can add it later as \"lthr\": 170 in session.json.")
 
     # Pace / target mode configuration
     print()

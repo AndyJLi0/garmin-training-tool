@@ -21,11 +21,12 @@ def pace_to_ms(pace_str):
 
 # === Target builders ===
 
-def hr_zone_target(zone):
+def hr_zone_target(low_bpm, high_bpm):
+    """Create HR target with BPM range."""
     return {
         "targetType": {"workoutTargetTypeId": 4, "workoutTargetTypeKey": "heart.rate.zone"},
-        "targetValueOne": zone,
-        "targetValueTwo": zone,
+        "targetValueOne": low_bpm,
+        "targetValueTwo": high_bpm,
     }
 
 

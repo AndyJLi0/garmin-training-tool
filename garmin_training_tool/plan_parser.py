@@ -30,7 +30,25 @@ _PACE_TO_HR_ZONE = {
 }
 
 
-def _resolve_target(target_def, paces, target_mode=None):
+# Default zone percentages of LTHR (lactate threshold heart rate)
+_DEFAULT_ZONE_PCT = {
+    1: (0.60, 0.72),
+    2: (0.72, 0.82),
+    3: (0.82, 0.89),
+    4: (0.89, 0.96),
+    5: (0.96, 1.06),
+}
+
+
+def compute_hr_zones(lthr):
+    """Compute HR zone BPM ranges from lactate threshold heart rate."""
+    zones = {}
+    for zone, (low_pct, high_pct) in _DEFAULT_ZONE_PCT.items():
+        zones[zone] = (round(lthr * low_pct), round(lthr * high_pct))
+    return zones
+
+
+def _resolve_target(target_def, paces, target_mode=None, hr_zones=None):
     """Resolve a target definition from YAML into a target dict."""
     if target_def is None or target_def == "none":
         return no_target()
@@ -39,7 +57,14 @@ def _resolve_target(target_def, paces, target_mode=None):
         # Heart rate zone: "z1", "z2", etc.
         if target_def.startswith("z"):
             zone = int(target_def[1:])
-            return hr_zone_target(zone)
+            if hr_zones and zone in hr_zones:
+                low_bpm, high_bpm = hr_zones[zone]
+                return hr_zone_target(low_bpm, high_bpm)
+            raise ValueError(
+                f"HR zone {zone} referenced but no heart rate zones configured. "
+                f"Run 'garmin-training-tool setup' and enter your LTHR, or add "
+                f"\"lthr\" to session.json."
+            )
 
         # Pace reference: "$easy", "$lt", etc.
         if target_def.startswith("$"):
@@ -48,7 +73,14 @@ def _resolve_target(target_def, paces, target_mode=None):
             # HR-only mode: map pace names to HR zones
             if target_mode == "hr":
                 zone = _PACE_TO_HR_ZONE.get(pace_name, 3)
-                return hr_zone_target(zone)
+                if hr_zones and zone in hr_zones:
+                    low_bpm, high_bpm = hr_zones[zone]
+                    return hr_zone_target(low_bpm, high_bpm)
+                raise ValueError(
+                    f"HR zone mode requires heart rate zones configured. "
+                    f"Run 'garmin-training-tool setup' and enter your LTHR, or add "
+                    f"\"lthr\" to session.json."
+                )
 
             if pace_name not in paces:
                 raise ValueError(
@@ -62,7 +94,14 @@ def _resolve_target(target_def, paces, target_mode=None):
         # Inline pace: "5:00-5:30"
         if "-" in target_def and ":" in target_def:
             if target_mode == "hr":
-                return hr_zone_target(3)
+                if hr_zones and 3 in hr_zones:
+                    low_bpm, high_bpm = hr_zones[3]
+                    return hr_zone_target(low_bpm, high_bpm)
+                raise ValueError(
+                    f"HR zone mode requires heart rate zones configured. "
+                    f"Run 'garmin-training-tool setup' and enter your LTHR, or add "
+                    f"\"lthr\" to session.json."
+                )
             slow, fast = target_def.split("-")
             return pace_target(slow.strip(), fast.strip())
 
@@ -99,7 +138,7 @@ def _resolve_condition(condition_def):
     raise ValueError(f"Unknown condition format: {condition_def}")
 
 
-def _parse_steps(steps_yaml, paces, target_mode=None):
+def _parse_steps(steps_yaml, paces, target_mode=None, hr_zones=None):
     """Parse a list of step definitions from YAML."""
     steps = []
     for step_def in steps_yaml:
@@ -109,18 +148,18 @@ def _parse_steps(steps_yaml, paces, target_mode=None):
             # Repeat step
             if step_type.startswith("repeat"):
                 count = int(step_type.replace("repeat", "").strip("() "))
-                sub_steps = _parse_steps(step_def[step_type], paces, target_mode)
+                sub_steps = _parse_steps(step_def[step_type], paces, target_mode, hr_zones)
                 steps.append(("repeat", count, sub_steps))
             else:
                 # Regular step: warmup, cooldown, run, recovery
                 details = step_def[step_type]
                 if isinstance(details, dict):
                     condition = _resolve_condition(details.get("duration") or details.get("distance") or "lap")
-                    target = _resolve_target(details.get("target"), paces, target_mode)
+                    target = _resolve_target(details.get("target"), paces, target_mode, hr_zones)
                 elif isinstance(details, str):
                     parts = details.split()
                     condition = _resolve_condition(parts[0])
-                    target = _resolve_target(parts[1] if len(parts) > 1 else None, paces, target_mode)
+                    target = _resolve_target(parts[1] if len(parts) > 1 else None, paces, target_mode, hr_zones)
                 else:
                     raise ValueError(f"Invalid step details: {details}")
 
@@ -135,7 +174,7 @@ def _parse_steps(steps_yaml, paces, target_mode=None):
     return steps
 
 
-def parse_plan(yaml_path, race_date=None, user_paces=None, target_mode=None):
+def parse_plan(yaml_path, race_date=None, user_paces=None, target_mode=None, lthr=None, hr_zones=None):
     """Parse a YAML training plan file.
 
     Args:
@@ -145,6 +184,8 @@ def parse_plan(yaml_path, race_date=None, user_paces=None, target_mode=None):
         user_paces: Optional dict of user-defined paces from session.json.
                     Used as fallback when plan doesn't define its own paces.
         target_mode: Optional "hr" to convert all pace targets to HR zones instead.
+        lthr: Optional lactate threshold heart rate (int). Used to compute zone BPM ranges.
+        hr_zones: Optional pre-computed dict of {zone: (low_bpm, high_bpm)}.
 
     Returns:
         tuple: (workouts_dict, schedule_list)
@@ -153,6 +194,10 @@ def parse_plan(yaml_path, race_date=None, user_paces=None, target_mode=None):
     """
     with open(yaml_path) as f:
         plan = yaml.safe_load(f)
+
+    # Compute HR zones from LTHR or use provided zones
+    if hr_zones is None and lthr:
+        hr_zones = compute_hr_zones(lthr)
 
     # Parse pace definitions: plan paces override user paces
     paces = {}
@@ -173,7 +218,7 @@ def parse_plan(yaml_path, race_date=None, user_paces=None, target_mode=None):
     workouts = {}
     if "workouts" in plan:
         for workout_name, steps_yaml in plan["workouts"].items():
-            steps = _parse_steps(steps_yaml, paces, target_mode)
+            steps = _parse_steps(steps_yaml, paces, target_mode, hr_zones)
             workouts[workout_name] = build_workout(workout_name, steps)
 
     # Parse schedule

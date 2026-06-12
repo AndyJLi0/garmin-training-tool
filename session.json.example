@@ -2,6 +2,7 @@
   "session_cookie": "PASTE_YOUR_SESSION_COOKIE_HERE",
   "csrf_token": "PASTE_YOUR_CSRF_TOKEN_HERE",
   "extra_cookies": {},
+  "lthr": 170,
   "target_mode": "pace",
   "paces": {
     "easy": "5:30-6:00",
